@@ -19,15 +19,16 @@
 - [Résultats / Results](#résultats--results)
 - [Installation et utilisation / Installation & Usage](#installation-et-utilisation--installation--usage)
 - [Structure du dépôt / Repository Structure](#structure-du-dépôt--repository-structure)
+- [Nomenclature](#nomenclature)
 - [Licence / License](#licence--license)
 
 ---
 
 ## Résumé / Abstract
 
-**FR —** Le Système de Guielle est un mécanisme mécanique élastique constitué d'une roue de rayon *r* et de masse *m*, entraînée par les forces de rappel de *n* ressorts de raideur *k*, tous ancrés en un point unique *P* de la roue, leurs extrémités fixes *Aᵢ* étant attachées à un support immobile extérieur. L'objectif est de démontrer que ce système peut générer un couple mécanique continu à partir de l'énergie élastique des ressorts, en vérifiant une triple condition sur le moment résultant adimensionnel *g(t)*.
+**FR —** Le Système de Guielle est un mécanisme mécanique élastique constitué d'une roue de rayon $r$ et de masse $m$, entraînée par les forces de rappel de $n$ ressorts de raideur $k$, tous ancrés en un point unique $P$ de la roue, leurs extrémités fixes $A_i$ étant attachées à un support immobile extérieur. L'objectif est de démontrer que ce système peut générer un couple mécanique continu à partir de l'énergie élastique des ressorts, en vérifiant une triple condition sur le moment résultant adimensionnel $g(t)$.
 
-**EN —** The Guielle System is an elastic mechanical device consisting of a wheel of radius *r* and mass *m*, driven by the restoring forces of *n* springs of stiffness *k*, all attached at a single point *P* on the wheel, with their fixed ends *Aᵢ* anchored to an immobile external support. The goal is to demonstrate that this system can generate continuous mechanical torque from the elastic energy stored in the springs, by verifying a triple condition on the dimensionless resultant moment *g(t)*.
+**EN —** The Guielle System is an elastic mechanical device consisting of a wheel of radius $r$ and mass $m$, driven by the restoring forces of $n$ springs of stiffness $k$, all attached at a single point $P$ on the wheel, with their fixed ends $A_i$ anchored to an immobile external support. The goal is to demonstrate that this system can generate continuous mechanical torque from the elastic energy stored in the springs, by verifying a triple condition on the dimensionless resultant moment $g(t)$.
 
 ---
 
@@ -43,145 +44,265 @@
     └── roue de rayon r, masse m / wheel radius r, mass m
 ```
 
-- **n** ressorts identiques, extrémités fixes *Aᵢ* réparties angulairement : `βᵢ = i · 2π/n`
-- Tous les ressorts sont attachés au **même point P** de la roue
-- Les *Aᵢ* sont **strictement fixes** dans le référentiel du laboratoire
-- La roue pivote autour de son centre *O*
+- $n$ ressorts identiques, extrémités fixes $A_i$ réparties angulairement
+- Tous les ressorts sont attachés au **même point $P$** de la roue
+- Les $A_i$ sont **strictement fixes** dans le référentiel du laboratoire
+- La roue pivote autour de son centre $O$
 
 ---
 
 ## Modélisation mathématique / Mathematical Modeling
 
-### Géométrie / Geometry
+### 1. Géométrie du système / System Geometry
 
-Les points fixes *Aᵢ* sont positionnés à distance `r·ε` du centre :
+Les $n$ points fixes $A_i$ sont positionnés à distance $r \cdot \varepsilon$ du centre, avec l'angle fixe $\beta_i$ dans le référentiel du laboratoire :
 
-```
-βᵢ = i · (2π/n)        (angle fixe dans le labo / fixed lab angle)
-ε  = 1 + l₀/r          (rapport géométrique / geometric ratio)
-Aᵢ = O + r·ε·(cos βᵢ,  sin βᵢ)
-τᵢ = βᵢ + θ             (angle caractéristique / characteristic angle)
-```
+$$
+\begin{aligned}
+\beta_i &= i \cdot \frac{2\pi}{n}, \quad i = 1, 2, \ldots, n
+    && \text{(angle fixe dans le labo / fixed lab angle)} \\
+\varepsilon &= 1 + \frac{l_0}{r}
+    && \text{(rapport géométrique / geometric ratio)} \\
+A_i &= O + r \cdot \varepsilon \cdot \begin{pmatrix} \cos \beta_i \\ \sin \beta_i \end{pmatrix}
+    && \text{(position fixe de } A_i\text{)} \\
+\tau_i &= \beta_i + \theta
+    && \text{(angle caractéristique / characteristic angle)}
+\end{aligned}
+$$
 
-### Élongation des ressorts / Spring Extension
+Le point $P$, mobile sur la roue, est repéré par l'angle de rotation $\theta(t)$ :
 
-Par le théorème de Pythagore appliqué au triangle *AᵢOP* :
+$$
+P(t) = O + r \begin{pmatrix} \cos\theta \\ \sin\theta \end{pmatrix}
+$$
 
-```
-( (xᵢ + l₀)/r )² = 1 + ε² + 2ε·cos τᵢ
+---
 
-xᵢ/r = √(1 + ε² + 2ε·cos τᵢ)  −  l₀/r
-```
+### 2. Élongation des ressorts / Spring Extension
 
-> Le ressort contribue **uniquement si** `xᵢ > 0` (en extension).
-> The spring contributes **only if** `xᵢ > 0` (under extension).
+Par le théorème de Pythagore appliqué au triangle $A_i O P$ :
 
-### Direction de la force de rappel / Spring Force Direction
+$$
+\left( x_i + l_0 \right)^2 = r^2 + (r + l_0)^2 + 2r(r + l_0)\cos\tau_i
+$$
 
-```
-αᵢ = arcsin( sin τᵢ / √(1 + ε² + 2ε·cos τᵢ) )
+En posant $\varepsilon = 1 + l_0/r$, la forme adimensionnelle devient :
 
-(ê_ρ, ê_{xᵢ}) = −θ + βᵢ + αᵢ
-```
+$$
+\left( \frac{x_i + l_0}{r} \right)^2 = 1 + \varepsilon^2 + 2\varepsilon \cos\tau_i
+$$
 
-### Moment résultant / Resultant Moment
+D'où l'**élongation adimensionnelle** :
 
-```
-M(θ) = −r²·k · Σᵢ [ (xᵢ/r) · sin(θ − βᵢ − αᵢ) ]
+$$
+\boxed{
+\frac{x_i}{r} = \sqrt{1 + \varepsilon^2 + 2\varepsilon\cos\tau_i} \;-\; \frac{l_0}{r}
+}
+$$
 
-g(t) = −M / (r²·k) = Σᵢ [ (xᵢ/r) · sin(θ − βᵢ − αᵢ) ]
-```
+> Le ressort $i$ contribue **uniquement si** $x_i > 0$ (extension active).  
+> Spring $i$ contributes **only if** $x_i > 0$ (under active extension).
 
-### Équation du mouvement / Equation of Motion
+---
 
-Le moment d'inertie est paramétré librement (`α` dépend de la géométrie réelle de la roue) :
+### 3. Direction de la force de rappel / Spring Force Direction
 
-```
-I = α · m · r²,    α ∈ [0.1, 1]
-```
+L'angle $\alpha_i$ découle de la relation géométrique $HP = (x_i + l_0)\sin\alpha_i = r\sin\tau_i$ :
 
-Équation différentielle du second ordre (théorème du moment dynamique) :
+$$
+\boxed{
+\alpha_i = \arcsin\!\left( \frac{\sin\tau_i}{\sqrt{1 + \varepsilon^2 + 2\varepsilon\cos\tau_i}} \right)
+}
+$$
 
-```
-┌─────────────────────────────────────────────────────────┐
-│  I · θ̈ = M(θ) − b · θ̇ − Cs · sgn(θ̇)                  │
-└─────────────────────────────────────────────────────────┘
-```
+L'angle orienté entre $\hat{e}_\rho$ et $\hat{e}_{x_i}$ vaut alors :
 
-où `b` est le frottement visqueux et `Cs` le couple résistant externe.
+$$
+\left(\widehat{\hat{e}_\rho,\, \hat{e}_{x_i}}\right) = -\theta + \beta_i + \alpha_i
+$$
 
-### Bilan énergétique / Energy Balance
+---
 
-| Grandeur | Expression |
-|---|---|
-| Énergie cinétique / Kinetic energy | `Ec = ½ · I · ω²` |
-| Énergie élastique / Elastic energy | `Ee = Σᵢ ½·k·xᵢ²  (xᵢ > 0)` |
-| Puissance frottement / Friction power | `Pf = b · ω²` |
-| Puissance résistante / Load power | `Ps = Cs · |ω|` |
-| Bilan / Balance | `Ėc = M·ω − Pf − Ps` |
+### 4. Force de rappel et moment résultant / Restoring Force and Resultant Moment
+
+La force de rappel du ressort $i$ est :
+
+$$
+\vec{F}_{r_i} = -k \, x_i \, \hat{e}_{x_i}
+$$
+
+Le moment de la force résultante par rapport à $O$ est :
+
+$$
+\mathcal{M}_{\vec{F}_r/O} = \vec{OP} \times \vec{F}_r
+= -r\,\hat{e}_\rho \times \sum_{i=1}^{n} k\, x_i\, \hat{e}_{x_i}
+$$
+
+En développant le produit vectoriel $\hat{e}_{\rho} \times \hat{e}_{x_i} = \sin\left(\angle(\hat{e}_{\rho},\hat{e}_{x_i})\right)\hat{e}_z$ :
+
+$$
+\boxed{
+\mathcal{M}_{\vec{F}_r/O}(\theta)
+= -r^2 k \sum_{i=1}^{n} \left[ \frac{x_i}{r} \cdot \sin\!\left(\theta - \beta_i - \alpha_i\right) \right]
+}
+$$
+
+La **fonction adimensionnelle centrale** de l'étude est :
+
+$$
+\boxed{
+g(t) = -\frac{\mathcal{M}}{r^2 k}
+= \sum_{i=1}^{n} \left[ \frac{x_i}{r} \cdot \sin\!\left(\theta - \beta_i - \alpha_i\right) \right]
+}
+$$
+
+---
+
+### 5. Hypothèse de mouvement uniforme / Uniform Motion Assumption
+
+Dans le document original, l'étude analytique de $g(t)$ est conduite en posant $\theta = \omega t$ :
+
+$$
+\begin{aligned}
+g(t) &= \sum_{i=1}^{n} \left[ \frac{x_i}{r} \cdot \sin\!\left(\omega t - \mu_i\right) \right] \\
+\frac{x_i}{r} &= \sqrt{1 + \varepsilon^2 + 2\varepsilon\cos(\omega t + \beta_i)} - \frac{l_0}{r} \\
+\alpha_i &= \arcsin\!\left( \frac{\sin(\omega t + \beta_i)}{\sqrt{1 + \varepsilon^2 + 2\varepsilon\cos(\omega t + \beta_i)}} \right)
+\end{aligned}
+$$
+
+avec $\mu_i = \beta_i + \alpha_i$.
+
+> La simulation RK4 lève cette hypothèse en résolvant $\theta(t)$ dynamiquement.
+
+---
+
+### 6. Équation du mouvement / Equation of Motion
+
+Le moment d'inertie est **paramétré librement** par le coefficient $\alpha$ :
+
+$$
+I = \alpha \cdot m \cdot r^2, \qquad \alpha \in [0.1,\; 1]
+$$
+
+Le **théorème du moment dynamique** donne l'équation différentielle du second ordre :
+
+$$
+\boxed{
+I\,\ddot{\theta} = \mathcal{M}_{\vec{F}_r/O}(\theta) \;-\; b\,\dot{\theta} \;-\; C_s\,\mathrm{sgn}(\dot{\theta})
+}
+$$
+
+où $b$ est le coefficient de frottement visqueux et $C_s$ le couple résistant externe.  
+Dans le cas idéal du document : $b = 0$ et $C_s = 0$.
+
+---
+
+### 7. Bilan énergétique / Energy Balance
+
+$$
+\begin{aligned}
+E_c &= \frac{1}{2} I \omega^2 = \frac{1}{2}\alpha m r^2 \omega^2
+    && \text{(énergie cinétique / kinetic energy)} \
+E_e &= \sum_{i=1}^{n} \frac{1}{2} k\, x_i^2 \quad (x_i > 0)
+    && \text{(énergie élastique / elastic energy)} \\
+P_f &= b\,\omega^2
+    && \text{(puissance frottement / friction power)} \\
+P_s &= C_s\,|\omega|
+    && \text{(puissance résistante / load power)} \\
+\dot{E}_c &= \mathcal{M}\cdot\omega - P_f - P_s
+    && \text{(bilan / energy balance)}
+\end{aligned}
+$$
 
 ---
 
 ## Triple condition de mouvement / Triple Motion Condition
 
-La roue pivote **indéfiniment** si et seulement si la fonction *g(t)* vérifie **simultanément** :
+La roue pivote **indéfiniment** si et seulement si $g(t)$ vérifie **simultanément** pour tout $t \geq 0$ :
 
-| # | Condition | Signification |
-|---|---|---|
-| (C1) | `\|g(t)\| > 0` | Moment moteur non nul en tout instant |
-| (C2) | `g(t) ≈ constante` | Mouvement tend vers un régime uniforme |
-| (C3) | `sgn(g(t))` invariable | La roue ne peut pas s'inverser |
+$$
+\begin{cases}
+\textbf{(C1)} \quad |g(t)| > 0
+    & \text{moment moteur non nul en tout instant} \\
+\textbf{(C2)} \quad g(t) \approx \text{constante}
+    & \text{mouvement tend vers un régime uniforme} \\
+\textbf{(C3)} \quad \mathrm{sgn}(g(t)) = \text{invariable}
+    & \text{la roue ne peut pas s'inverser}
+\end{cases}
+$$
 
-> Dans le document original, l'étude analytique suppose `θ = ωt` (mouvement uniforme imposé).
-> La simulation RK4 lève cette hypothèse en résolvant le régime transitoire complet.
+Formellement :
+
+$$
+\begin{cases}
+\left| \mathcal{M}_{\vec{F}_r/O}(t) \right| > 0 \\
+\mathcal{M}_{\vec{F}_r/O}(t + \Delta t) - \mathcal{M}_{\vec{F}_r/O}(t) \approx 0
+\end{cases}
+\quad \forall\, t \in \mathbb{R}^+
+$$
+
+### Effets des paramètres / Parameter Effects
+
+| Paramètre | Effet sur la triple condition |
+|---|---|
+| $n \uparrow$ | $g(t)$ plus stable, oscillations réduites, (C2) mieux vérifiée |
+| $k \uparrow$ | Moments plus grands, (C1) plus robuste |
+| $l_0 > r$ | Assure plusieurs ressorts en extension simultanée |
+| $\alpha \downarrow$ | Meilleur dépassement des positions d'équilibre |
+| $b > 0$ | Décroissance de $\omega$ si $\mathcal{M} \ll b\,\omega$ |
 
 ---
 
 ## Simulation numérique / Numerical Simulation
 
-### Méthode / Method
+### Méthode RK4 / RK4 Method
 
-L'équation du second ordre est réduite à un système du premier ordre `s = (θ, ω)` :
+L'équation du second ordre est réduite à un système du premier ordre avec l'état $\mathbf{s} = (\theta,\, \omega)$ :
 
-```
-ds/dt = f(s) = ( ω,  [M(θ) − b·ω − Cs·sgn(ω)] / I )
-```
+$$
+\frac{d\mathbf{s}}{dt} = f(\mathbf{s})
+= \begin{pmatrix} \omega \\ 
+\dfrac{\mathcal{M}(\theta) - b\,\omega - C_s\,\mathrm{sgn}(\omega)}{I} \end{pmatrix}
+$$
 
-Intégration par **Runge-Kutta ordre 4 (RK4)**, pas `Δt = 0.012 s` :
+Le schéma **Runge-Kutta d'ordre 4** à chaque pas $\Delta t$ :
 
-```
-s_{n+1} = sₙ + (Δt/6)·(k₁ + 2k₂ + 2k₃ + k₄)
-```
+$$
+\begin{aligned}
+k_1 &= f(\mathbf{s}_n) \\
+k_2 &= f\!\left(\mathbf{s}_n + \tfrac{\Delta t}{2}\,k_1\right) \\
+k_3 &= f\!\left(\mathbf{s}_n + \tfrac{\Delta t}{2}\,k_2\right) \\
+k_4 &= f\!\left(\mathbf{s}_n + \Delta t\, k_3\right)
+\end{aligned}
+$$
+
+$$
+\boxed{
+\mathbf{s}_{n+1} = \mathbf{s}_n + \frac{\Delta t}{6}\left(k_1 + 2k_2 + 2k_3 + k_4\right)
+}
+$$
+
+avec $\Delta t = 0.012\,\text{s}$.
 
 ### Configurations testées / Tested Configurations
 
-| Config | n | r (m) | k (N/m) | l₀ (m) | m (kg) | α | Triple condition |
+| Config | $n$ | $r$ (m) | $k$ (N/m) | $l_0$ (m) | $m$ (kg) | $\alpha$ | Triple condition |
 |---|---|---|---|---|---|---|---|
 | C1 | 2 | 0.30 | 30 | 0.40 | 5 | 0.50 | (C1)✓ (C2)~ (C3)✓ |
 | C2 | 4 | 0.30 | 30 | 0.40 | 5 | 0.50 | (C1)✓ (C2)✓ (C3)✓ |
 | C3 | 6 | 0.30 | 50 | 0.50 | 8 | 0.40 | (C1)✓ (C2)✓ (C3)✓ |
 | C4 | 8 | 0.40 | 80 | 0.60 | 10 | 0.50 | (C1)✓ (C2)✓ (C3)✓ |
 
-> **Observation principale :** `n ≥ 4` avec `l₀ > r` est la configuration minimale garantissant la triple condition simultanée.
+> **Observation principale :** $n \geq 4$ avec $l_0 > r$ est la configuration minimale garantissant la triple condition simultanée.
 
 ---
 
 ## Résultats / Results
 
-- La simulation confirme qu'un moment moteur non nul et de signe constant est produit pour `n ≥ 3`
-- La constance de `g(t)` s'améliore avec `n`
-- La configuration géométrique particulière (tous les ressorts en *P*) crée une **asymétrie dynamique favorable**
-- `n ≥ 4` avec `l₀ > r` est la configuration minimale recommandée
-
-### Effets des paramètres / Parameter Effects
-
-| Paramètre | Effet sur la triple condition |
-|---|---|
-| `n` ↑ | `g(t)` plus stable, oscillations réduites, (C2) mieux vérifiée |
-| `k` ↑ | Moments plus grands, (C1) plus robuste |
-| `l₀ > r` | Assure plusieurs ressorts en extension simultanée |
-| `α` ↓ | Meilleur dépassement des positions d'équilibre |
-| `b > 0` | Décroissance progressive de `ω` si `M ≪ b·ω` |
+- Moment moteur non nul et de signe constant confirmé pour $n \geq 3$
+- Constance de $g(t)$ croissante avec $n$
+- La configuration (tous les ressorts en $P$) crée une **asymétrie dynamique favorable**
+- $n \geq 4$ avec $l_0 > r$ est la configuration minimale recommandée
 
 ---
 
@@ -201,13 +322,13 @@ streamlit run guielle_simulator.py
 
 L'application s'ouvre dans le navigateur à `http://localhost:8501`.
 
-### Fonctionnalités du simulateur / Simulator Features
+### Fonctionnalités / Features
 
-- Sliders interactifs pour tous les paramètres : `n`, `r`, `k`, `l₀`, `m`, `α`, `b`, `Cs`, `ω₀`
-- Intégration RK4 avec pas configurable
-- Graphiques en temps réel : `ω(t)`, `g(t)`, `Ec(t)`, `Ee(t)`, portrait de phase `ω(θ)`
-- Triple condition évaluée quantitativement
-- Analyse comparative `n = 2` à `8` en un clic
+- Sliders interactifs pour tous les paramètres : $n$, $r$, $k$, $l_0$, $m$, $\alpha$, $b$, $C_s$, $\omega_0$
+- Intégration RK4 avec pas $\Delta t$ configurable
+- Graphiques : $\omega(t)$, $g(t)$, $E_c(t)$, $E_e(t)$, portrait de phase $\omega(\theta)$
+- Triple condition (C1)(C2)(C3) évaluée quantitativement en temps réel
+- Analyse comparative $n = 2$ à $8$ en un clic
 - Export des données au format CSV
 
 ---
@@ -222,7 +343,7 @@ systeme-de-guielle/
 ├── docs/
 │   └── Systeme_Guielle_Rapport.docx  # Rapport de recherche bilingue
 └── notebooks/
-    └── guielle_analysis.ipynb         # (optionnel) Jupyter Notebook d'analyse
+    └── guielle_analysis.ipynb         # (optionnel) Jupyter Notebook
 ```
 
 ---
@@ -231,22 +352,22 @@ systeme-de-guielle/
 
 | Symbole | Définition |
 |---|---|
-| `n` | Nombre de ressorts / Number of springs |
-| `r` | Rayon de la roue (m) / Wheel radius (m) |
-| `m` | Masse de la roue (kg) / Wheel mass (kg) |
-| `k` | Constante de raideur (N/m) / Spring stiffness (N/m) |
-| `l₀` | Longueur naturelle des ressorts (m) / Natural spring length (m) |
-| `α` | Coefficient d'inertie (libre) / Free inertia coefficient |
-| `I` | Moment d'inertie = α·m·r² (kg·m²) |
-| `θ` | Angle de rotation (rad) |
-| `ω` | Vitesse angulaire (rad/s) |
-| `βᵢ` | Angle fixe du point Aᵢ (rad) |
-| `τᵢ` | Angle caractéristique τᵢ = βᵢ + θ |
-| `ε` | Rapport géométrique ε = 1 + l₀/r |
-| `xᵢ` | Élongation du ressort i (m) |
-| `g(t)` | Moment adimensionnel (sans unité) |
-| `b` | Coefficient de frottement visqueux |
-| `Cs` | Couple résistant externe (N·m) |
+| $n$ | Nombre de ressorts / Number of springs |
+| $r$ | Rayon de la roue (m) |
+| $m$ | Masse de la roue (kg) |
+| $k$ | Constante de raideur (N/m) |
+| $l_0$ | Longueur naturelle des ressorts (m) |
+| $\alpha$ | Coefficient d'inertie libre |
+| $I = \alpha m r^2$ | Moment d'inertie (kg·m²) |
+| $\theta$ | Angle de rotation (rad) |
+| $\omega = \dot{\theta}$ | Vitesse angulaire (rad/s) |
+| $\beta_i$ | Angle fixe du point $A_i$ (rad) |
+| $\tau_i = \beta_i + \theta$ | Angle caractéristique |
+| $\varepsilon = 1 + l_0/r$ | Rapport géométrique |
+| $x_i$ | Élongation du ressort $i$ (m) |
+| $g(t)$ | Moment adimensionnel |
+| $b$ | Coefficient de frottement visqueux |
+| $C_s$ | Couple résistant externe (N·m) |
 
 ---
 
@@ -254,19 +375,11 @@ systeme-de-guielle/
 
 Ce projet est distribué sous licence **Creative Commons Attribution 4.0 International (CC BY 4.0)**.
 
-This project is distributed under the **Creative Commons Attribution 4.0 International (CC BY 4.0)** license.
-
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
-Vous êtes libre de / You are free to:
-- **Partager** — copier et redistribuer le matériel / **Share** — copy and redistribute
-- **Adapter** — remixer, transformer et construire à partir du matériel / **Adapt** — remix, transform, and build upon
+**© 2025 Herolde GUIELLE** — Le concept mécanique du Système de Guielle, sa modélisation et ses formules constituent une œuvre intellectuelle originale. Toute publication académique ou commerciale utilisant ce travail doit citer l'auteur.
 
-**Sous les conditions suivantes / Under the following terms:**
-> Vous devez créditer l'œuvre, intégrer un lien vers la licence et indiquer si des modifications ont été effectuées.
-> You must give appropriate credit, provide a link to the license, and indicate if changes were made.
-
-**© 2025 Herolde GUIELLE — Tous droits réservés sur le concept original / All rights reserved on the original concept.**
+> *Any academic or commercial publication using this work must cite the author: Herolde GUIELLE (2025).*
 
 ---
 
