@@ -339,11 +339,7 @@ L'application s'ouvre dans le navigateur à `http://localhost:8501`.
 systeme-de-guielle/
 ├── README.md                          # Ce fichier / This file
 ├── LICENSE                            # Licence CC BY 4.0
-├── guielle_simulator.py               # Simulateur Streamlit principal
-├── docs/
-│   └── Systeme_Guielle_Rapport.docx  # Rapport de recherche bilingue
-└── notebooks/
-    └── guielle_analysis.ipynb         # (optionnel) Jupyter Notebook
+└── guielle_simulator.py               # Simulateur Streamlit principal
 ```
 
 ---
