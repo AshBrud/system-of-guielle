@@ -138,7 +138,7 @@ $$
 = -r\,\hat{e}_\rho \times \sum_{i=1}^{n} k\, x_i\, \hat{e}_{x_i}
 $$
 
-En développant le produit vectoriel $\hat{e}_{\rho} \times \hat{e}_{x_i} = \sin\left(\angle(\hat{e}_{\rho},\hat{e}_{x_i})\right)\hat{e}_z$ :
+En développant le produit vectoriel $\hat{e}_\rho \times \hat{e}_{x_i} = \sin\!\left(\widehat{\hat{e}_\rho, \hat{e}_{x_i}}\right)\hat{e}_z$ :
 
 $$
 \boxed{
